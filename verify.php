@@ -59,7 +59,7 @@ require __DIR__ . '/db.php';
 
                   }
                   catch (PDOException $e) {
-                      print $e->getMessage();
+                      echo $e->getMessage();
                   }
                 endif;
             else:
@@ -67,7 +67,7 @@ require __DIR__ . '/db.php';
             endif;
         }
         catch (PDOException $e) {
-            print $e->getMessage();
+            echo $e->getMessage();
         }
 
     endif;
