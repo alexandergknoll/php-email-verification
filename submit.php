@@ -1,6 +1,4 @@
 <?php
-
-// Composer Autoload
 require __DIR__ . '/vendor/autoload.php';
 
 // Initialize PHP environment variables with PHP dotenv
@@ -41,7 +39,7 @@ require __DIR__ . '/db.php';
     <?php
     // If the form submission includes the "g-captcha-response" field
     // Create an instance of the ReCaptcha service with secret
-    if (isset($_POST['g-recaptcha-response'])):
+    if (isset($_POST['g-recaptcha-response'])) {
         $recaptcha = new \ReCaptcha\ReCaptcha($_ENV['RECAPTCHA_SECRET']);
 
         // Capture IP address--this is passed on to Google ReCaptcha
@@ -56,7 +54,7 @@ require __DIR__ . '/db.php';
         // Make the call to verify the response and also pass the user's IP address
         $resp = $recaptcha->verify($_POST['g-recaptcha-response'], $ip);
 
-        if ($resp->isSuccess()):
+        if ($resp->isSuccess()) {
 
             // Initialize array of inputs.  We can add additional inputs as needed here
             $inputs = array(
@@ -70,9 +68,9 @@ require __DIR__ . '/db.php';
 
             // Sanitize input
             $sanitized_inputs = array();
-            foreach ($inputs as $key => $value):
+            foreach ($inputs as $key => $value) {
                 $sanitized_inputs[$key] = trim(stripslashes($value));
-            endforeach;
+            }
 
             // Construct SQL Query
             $sql = "INSERT INTO users (token, ipaddress, email, name, subscribe) "
@@ -124,15 +122,15 @@ require __DIR__ . '/db.php';
                 echo $e->getMessage();
             }
 
-        else:
+        } else {
             // Gather errors
-            foreach ($resp->getErrorCodes() as $code):
+            foreach ($resp->getErrorCodes() as $code) {
                 echo $code;
-            endforeach;
-        endif;
+            }
+        }
 
     // If no ReCaptcha, render the form
-    else:
+    } else {
     ?>
         <form method="POST">
             <label for="name">Name:</label>
@@ -147,7 +145,7 @@ require __DIR__ . '/db.php';
             <input type="submit">
         </form>
     <?php
-    endif;
+    }
     ?>
     </body>
 </html>

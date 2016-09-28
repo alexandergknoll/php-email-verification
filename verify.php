@@ -1,6 +1,4 @@
 <?php
-
-// Composer Autoload
 require __DIR__ . '/vendor/autoload.php';
 
 // Initialize PHP environment variables
@@ -23,7 +21,7 @@ require __DIR__ . '/db.php';
     <body>
     <?php
     // Make sure that our query string parameters exist
-    if(isset($_GET['t']) && isset($_GET['id'])):
+    if (isset($_GET['t']) && isset($_GET['id'])) {
         $token = trim(stripslashes($_GET['t']));
         $id = trim(stripslashes($_GET['id']));
 
@@ -38,11 +36,11 @@ require __DIR__ . '/db.php';
 
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if($result):
+            if ($result) {
                 // If the email address has already been validated, don't proceed
-                if ($result['validated']):
+                if ($result['validated']) {
                   echo "Email address has already been validated";
-                else:
+                } else {
                   // Construct SQL Query to set user's 'validated' field to true
                   // to prevent duplicate validation
                   $sql = "UPDATE users SET validated = 1 WHERE id = :id";
@@ -61,16 +59,16 @@ require __DIR__ . '/db.php';
                   catch (PDOException $e) {
                       echo $e->getMessage();
                   }
-                endif;
-            else:
+                }
+            } else {
                 echo "Something didn't match";
-            endif;
+            }
         }
         catch (PDOException $e) {
             echo $e->getMessage();
         }
 
-    endif;
+    }
     ?>
     </body>
 </html>
