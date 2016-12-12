@@ -49,8 +49,6 @@ require __DIR__ . '/db.php';
                       $stmt->bindParam(':id', $id);
                       $stmt->execute();
 
-                      $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
                       echo "Email address successfully validated";
 
                       // Now, do stuff here...
