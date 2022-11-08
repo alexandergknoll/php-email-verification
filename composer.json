@@ -1,6 +1,6 @@
 {
     "require": {
-        "phpmailer/phpmailer": "^5.2",
+        "phpmailer/phpmailer": "^6.5",
         "vlucas/phpdotenv": "^2.4",
         "google/recaptcha": "~1.1"
     }
