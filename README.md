@@ -1,8 +1,8 @@
-# PHP Email Validator
+# PHP Email Verification
 
 ## Description
 
-PHP Email Validator is a set of simple scripts to validate email addresses.  Upon completion of an opt-in form, an email is produced with a 'validation' link.
+PHP Email Verification is a set of simple scripts to verify email addresses.  Upon completion of an opt-in form, an email is produced with a 'verification' link.
 
 ## Features
 
