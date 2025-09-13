@@ -1,8 +1,10 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 // Initialize PHP environment variables with PHP dotenv
-$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 $dotenv->required([
     'DB_HOST',

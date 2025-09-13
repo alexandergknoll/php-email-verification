@@ -2,7 +2,7 @@
 require __DIR__ . '/vendor/autoload.php';
 
 // Initialize PHP environment variables
-$dotenv = new Dotenv\Dotenv(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 // Initialize Database

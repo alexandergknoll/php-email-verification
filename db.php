@@ -3,7 +3,7 @@
 $db = new PDO(
     'mysql:dbname='.$_ENV['DB_NAME']
         .';host='.$_ENV['DB_HOST']
-        .';charset=utf8',
+        .';port=3306;charset=utf8',
     $_ENV['DB_USER'],
     $_ENV['DB_PASS']
 );
