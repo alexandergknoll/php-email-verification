@@ -21,6 +21,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/error_handler.php';
+require_once __DIR__ . '/csrf_protection.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -66,9 +67,18 @@ require __DIR__ . '/db.php';
     <body>
     <?php
     /**
-     * Process form submission with ReCaptcha validation
+     * Process form submission with ReCaptcha and CSRF validation
      */
     if (isset($_POST['g-recaptcha-response'])) {
+        /**
+         * Verify CSRF token first
+         *
+         * This prevents CSRF attacks before any processing occurs
+         */
+        if (!verifyCSRFTokenFromPost('registration')) {
+            echo "Security validation failed. Please try again.";
+            exit;
+        }
         // Initialize ReCaptcha service
         $recaptcha = new \ReCaptcha\ReCaptcha($_ENV['RECAPTCHA_SECRET']);
 
@@ -225,6 +235,9 @@ require __DIR__ . '/db.php';
     } else {
     ?>
         <form method="POST">
+            <!-- CSRF Token for security -->
+            <?= getCSRFTokenField('registration') ?>
+
             <label for="name">Name:</label>
             <input id="name" name="name" type="text" required>
             <label for="email">Email:</label>
