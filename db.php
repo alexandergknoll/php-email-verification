@@ -43,7 +43,6 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  * - token: Unique verification token for email validation
  * - ipaddress: IP address of the user during registration
  * - name: User's name
- * - subscribe: Newsletter subscription preference
  */
 $sql = "CREATE TABLE IF NOT EXISTS users ("
       ."id int NOT NULL AUTO_INCREMENT,"
@@ -52,7 +51,6 @@ $sql = "CREATE TABLE IF NOT EXISTS users ("
       ."token varchar(255) NOT NULL UNIQUE,"
       ."ipaddress varchar(255),"
       ."name varchar(255),"
-      ."subscribe bool,"
       ."primary key (id),"
       ."UNIQUE KEY token_unique (token)"
       .")";

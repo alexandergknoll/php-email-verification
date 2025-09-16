@@ -116,12 +116,10 @@ require __DIR__ . '/db.php';
              * @var array $inputs User form data
              * - email: User's email address
              * - name: User's full name
-             * - subscribe: Boolean for newsletter subscription
              */
             $inputs = array(
                 'email'     => isset($_POST['email']) ? $_POST['email'] : '',
-                'name'      => isset($_POST['name']) ? $_POST['name'] : '',
-                'subscribe' => isset($_POST['subscribe']) ? true : false
+                'name'      => isset($_POST['name']) ? $_POST['name'] : ''
             );
 
             /**
@@ -146,8 +144,8 @@ require __DIR__ . '/db.php';
             /**
              * Store user registration in database
              */
-            $sql = "INSERT INTO users (token, ipaddress, email, name, subscribe) "
-                  ."VALUES (:token, :ipaddress, :email, :name, :subscribe)";
+            $sql = "INSERT INTO users (token, ipaddress, email, name) "
+                  ."VALUES (:token, :ipaddress, :email, :name)";
 
             try {
               // Prepare and execute parameterized query for security
@@ -156,7 +154,6 @@ require __DIR__ . '/db.php';
               $stmt->bindParam(':ipaddress', $ip, PDO::PARAM_STR);
               $stmt->bindParam(':email', $sanitized_inputs['email'], PDO::PARAM_STR);
               $stmt->bindParam(':name', $sanitized_inputs['name'], PDO::PARAM_STR);
-              $stmt->bindParam(':subscribe', $sanitized_inputs['subscribe'], PDO::PARAM_BOOL);
               $stmt->execute();
 
               /**
@@ -242,10 +239,6 @@ require __DIR__ . '/db.php';
             <input id="name" name="name" type="text" required>
             <label for="email">Email:</label>
             <input id="email" name="email" type="email" required>
-            <label>
-                <input id="subscribe" name="subscribe" type="checkbox" required>
-                Subscribe
-            </label>
             <!-- ReCaptcha v2 widget -->
             <div class="g-recaptcha" data-sitekey="<?= $_ENV['RECAPTCHA_SITEKEY'] ?>"></div>
             <input type="submit">
