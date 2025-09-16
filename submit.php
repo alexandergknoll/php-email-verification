@@ -22,6 +22,11 @@
 require __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/error_handler.php';
 require_once __DIR__ . '/csrf_protection.php';
+require_once __DIR__ . '/security_headers.php';
+
+// Set security headers before any output
+setSecurityHeaders();
+setNoCacheHeaders(); // Prevent caching of form pages
 
 use PHPMailer\PHPMailer\PHPMailer;
 
