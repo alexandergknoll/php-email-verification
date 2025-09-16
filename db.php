@@ -27,7 +27,7 @@ try {
     $stmt->execute();
 }
 catch (PDOException $e) {
-    echo $e->getMessage();
+    echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
 }
 
 ?>

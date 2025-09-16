@@ -116,19 +116,19 @@ require __DIR__ . '/db.php';
 
               if(!$mail->send()) {
                   echo 'Message could not be sent.';
-                  echo 'Mailer Error: ' . $mail->ErrorInfo;
+                  echo 'Mailer Error: ' . htmlspecialchars($mail->ErrorInfo, ENT_QUOTES, 'UTF-8');
               } else {
                   echo 'Email has been sent; please validate your email before continuing';
               }
             }
             catch (PDOException $e) {
-                echo $e->getMessage();
+                echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
             }
 
         } else {
             // Gather errors
             foreach ($resp->getErrorCodes() as $code) {
-                echo $code;
+                echo htmlspecialchars($code, ENT_QUOTES, 'UTF-8');
             }
         }
 

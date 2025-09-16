@@ -55,7 +55,7 @@ require __DIR__ . '/db.php';
 
                   }
                   catch (PDOException $e) {
-                      echo $e->getMessage();
+                      echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
                   }
                 }
             } else {
@@ -63,7 +63,7 @@ require __DIR__ . '/db.php';
             }
         }
         catch (PDOException $e) {
-            echo $e->getMessage();
+            echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
         }
 
     }
