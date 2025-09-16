@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/error_handler.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
@@ -115,14 +116,13 @@ require __DIR__ . '/db.php';
               $mail->Body    = $_ENV['EMAIL_BODY'].' '.$url;
 
               if(!$mail->send()) {
-                  echo 'Message could not be sent.';
-                  echo 'Mailer Error: ' . htmlspecialchars($mail->ErrorInfo, ENT_QUOTES, 'UTF-8');
+                  handleMailError($mail->ErrorInfo);
               } else {
                   echo 'Email has been sent; please validate your email before continuing';
               }
             }
             catch (PDOException $e) {
-                echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+                handleDatabaseError($e, 'registration');
             }
 
         } else {

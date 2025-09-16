@@ -1,5 +1,7 @@
 <?php
 
+require_once __DIR__ . '/error_handler.php';
+
 $db = new PDO(
     'mysql:dbname='.$_ENV['DB_NAME']
         .';host='.$_ENV['DB_HOST']
@@ -27,7 +29,7 @@ try {
     $stmt->execute();
 }
 catch (PDOException $e) {
-    echo htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+    handleDatabaseError($e, 'initialization');
 }
 
 ?>
