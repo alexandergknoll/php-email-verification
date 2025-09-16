@@ -65,8 +65,9 @@ require __DIR__ . '/db.php';
                 'subscribe' => isset($_POST['subscribe']) ? true : false //Boolean for checkbox
             );
 
-            // Create a "unique" token.
-            $token = bin2hex(openssl_random_pseudo_bytes(16));
+            // Create a cryptographically secure unique token.
+            // Using random_bytes(32) for 256 bits of entropy (64 hex characters)
+            $token = bin2hex(random_bytes(32));
 
             // Sanitize input
             $sanitized_inputs = array();
