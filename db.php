@@ -37,7 +37,7 @@ $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
  * Create users table if it doesn't exist
  *
  * Table Schema:
- * - id: Auto-incrementing primary key
+ * - id: Auto-incrementing primary key (internal use only)
  * - email: User's email address
  * - validated: Boolean flag for email verification status (default: 0)
  * - token: Unique verification token for email validation
@@ -49,11 +49,12 @@ $sql = "CREATE TABLE IF NOT EXISTS users ("
       ."id int NOT NULL AUTO_INCREMENT,"
       ."email varchar(255) NOT NULL,"
       ."validated bool NOT NULL DEFAULT 0,"
-      ."token varchar(255) NOT NULL,"
+      ."token varchar(255) NOT NULL UNIQUE,"
       ."ipaddress varchar(255),"
       ."name varchar(255),"
       ."subscribe bool,"
-      ."primary key (id)"
+      ."primary key (id),"
+      ."UNIQUE KEY token_unique (token)"
       .")";
 
 try {

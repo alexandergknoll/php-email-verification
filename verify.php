@@ -6,18 +6,18 @@
  * Users receive this URL via email after registration.
  *
  * Verification Process:
- * 1. Validates presence of token and ID parameters
- * 2. Checks database for matching user record
+ * 1. Validates presence of token parameter
+ * 2. Checks database for matching user record by token
  * 3. Ensures email hasn't already been verified
  * 4. Updates user's validation status
  *
  * Security Features:
- * - Requires both token AND user ID for verification
+ * - Uses only cryptographically secure token for verification
  * - Prevents duplicate verification
  * - Sanitizes all user inputs
  * - Uses parameterized queries
  *
- * URL Format: verify.php?t=TOKEN&id=USER_ID
+ * URL Format: verify.php?t=TOKEN (no user ID needed)
  */
 
 require __DIR__ . '/vendor/autoload.php';
@@ -49,27 +49,24 @@ require __DIR__ . '/db.php';
     /**
      * Process email verification request
      */
-    if (isset($_GET['t']) && isset($_GET['id'])) {
+    if (isset($_GET['t'])) {
         /**
-         * Extract and sanitize verification parameters
+         * Extract and sanitize verification token
          *
          * @var string $token The verification token (64 hex characters)
-         * @var string $id The user ID from the database
          */
         $token = trim(stripslashes($_GET['t']));
-        $id = trim(stripslashes($_GET['id']));
 
         /**
-         * Query database for matching user
+         * Query database for matching user by token only
          *
-         * Requires both correct token AND matching user ID
-         * This dual requirement prevents token enumeration attacks
+         * Since tokens are cryptographically secure and unique,
+         * we don't need the user ID, preventing enumeration attacks
          */
-        $sql = "SELECT * FROM users WHERE id = :id AND token = :token";
+        $sql = "SELECT * FROM users WHERE token = :token";
 
         try {
             $stmt = $db->prepare($sql);
-            $stmt->bindParam(':id', $id);
             $stmt->bindParam(':token', $token);
             $stmt->execute();
 
@@ -99,10 +96,10 @@ require __DIR__ . '/db.php';
                    * - Redirect to login/dashboard
                    * - Trigger webhook notifications
                    */
-                  $sql = "UPDATE users SET validated = 1 WHERE id = :id";
+                  $sql = "UPDATE users SET validated = 1 WHERE token = :token";
                   try {
                       $stmt = $db->prepare($sql);
-                      $stmt->bindParam(':id', $id);
+                      $stmt->bindParam(':token', $token);
                       $stmt->execute();
 
                       echo "Email address successfully validated";
@@ -125,10 +122,10 @@ require __DIR__ . '/db.php';
                 /**
                  * Verification failed
                  *
-                 * Either token doesn't exist or ID doesn't match
+                 * Token doesn't exist or is invalid
                  * Generic message prevents information disclosure
                  */
-                echo "Something didn't match";
+                echo "Invalid or expired verification link";
             }
         }
         catch (PDOException $e) {
@@ -139,7 +136,7 @@ require __DIR__ . '/db.php';
         /**
          * Missing required parameters
          *
-         * User accessed verify.php without proper token/id parameters
+         * User accessed verify.php without token parameter
          * This might happen if:
          * - User manually typed the URL
          * - Email client corrupted the link

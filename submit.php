@@ -155,18 +155,13 @@ require __DIR__ . '/db.php';
               $stmt->execute();
 
               /**
-               * Get the auto-generated user ID
-               * @var int $user_id Newly created user's ID
-               */
-              $user_id = $db->lastInsertId();
-
-              /**
                * Build verification URL
                *
-               * Format: https://domain.com/verify.php?t=TOKEN&id=USER_ID
-               * Both token and ID are required for verification
+               * Format: https://domain.com/verify.php?t=TOKEN
+               * Only the token is needed for verification (no ID exposure)
+               * This prevents user enumeration attacks
                */
-              $url = $_ENV['URL']."/verify.php?t=$token&id=$user_id";
+              $url = $_ENV['URL']."/verify.php?t=$token";
 
               /**
                * Configure and send verification email
